@@ -89,6 +89,75 @@ function getGoogleDriveImageUrl(value?: string) {
   return text;
 }
 
+function extractDriveFileId(value?: string) {
+  if (!value) return '';
+  const text = String(value).trim();
+  if (!text) return '';
+
+  if (!text.includes('http') && !text.includes('id=')) {
+    return text;
+  }
+
+  const idFromQuery = text.match(/[?&]id=([^&]+)/)?.[1];
+  if (idFromQuery) return idFromQuery;
+
+  const idFromPath = text.match(/\/d\/([^/?]+)/)?.[1];
+  if (idFromPath) return idFromPath;
+
+  return '';
+}
+
+function buildImageCandidates(url?: string) {
+  const base = String(url ?? '').trim();
+  if (!base) return [];
+
+  const fileId = extractDriveFileId(base);
+  if (!fileId) {
+    const baseWithoutProtocol = base.replace(/^https?:\/\//, '');
+    return [base, `https://images.weserv.nl/?url=${encodeURIComponent(baseWithoutProtocol)}`];
+  }
+
+  return [
+    `https://lh3.googleusercontent.com/d/${fileId}=s0`,
+    `https://drive.google.com/uc?export=view&id=${fileId}`,
+    `https://drive.google.com/uc?export=download&id=${fileId}`,
+    `https://drive.google.com/thumbnail?id=${fileId}&sz=w2000`,
+    `https://images.weserv.nl/?url=${encodeURIComponent(`drive.google.com/uc?export=download&id=${fileId}`)}`,
+    base,
+  ];
+}
+
+type SmartImageProps = {
+  src: string;
+  alt: string;
+};
+
+function SmartImage({ src, alt }: SmartImageProps) {
+  const candidates = useMemo(() => buildImageCandidates(src), [src]);
+  const [candidateIndex, setCandidateIndex] = useState(0);
+
+  useEffect(() => {
+    setCandidateIndex(0);
+  }, [src]);
+
+  const currentSrc = candidates[candidateIndex] ?? src;
+
+  return (
+    <img
+      className="hero-image"
+      src={currentSrc}
+      alt={alt}
+      referrerPolicy="no-referrer"
+      crossOrigin="anonymous"
+      onError={() => {
+        setCandidateIndex((prev) =>
+          prev < candidates.length - 1 ? prev + 1 : prev
+        );
+      }}
+    />
+  );
+}
+
 async function fetchContentById(contentId: string): Promise<PageData | null> {
   const response = await fetch(SHEET_CSV_URL);
 
@@ -231,7 +300,7 @@ function App() {
         {imageUrl ? (
           <>
             <p className="section-title">Blog Image</p>
-            <img className="hero-image" src={imageUrl} alt={title} />
+            <SmartImage src={imageUrl} alt={title} />
           </>
         ) : null}
 
@@ -255,7 +324,7 @@ function App() {
           <>
             <div className="divider" />
             <p className="section-title">Instagram Image</p>
-            <img className="hero-image" src={instaImageUrl} alt={title} />
+            <SmartImage src={instaImageUrl} alt={title} />
           </>
         ) : null}
       </article>
