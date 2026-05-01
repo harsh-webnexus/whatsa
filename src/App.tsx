@@ -2,11 +2,17 @@ import { useEffect, useMemo, useState } from 'react';
 
 type PageData = {
   content_id?: string;
+
   title?: string;
   blog_image?: string;
-  insta_image?: string;
   short_description?: string;
   long_description?: string;
+
+  insta_image?: string;
+  instagram_description?: string;
+
+  facebook_image?: string;
+  facebook_description?: string;
 };
 
 const SHEET_CSV_URL =
@@ -91,7 +97,9 @@ function getGoogleDriveImageUrl(value?: string) {
 
 function extractDriveFileId(value?: string) {
   if (!value) return '';
+
   const text = String(value).trim();
+
   if (!text) return '';
 
   if (!text.includes('http') && !text.includes('id=')) {
@@ -109,12 +117,18 @@ function extractDriveFileId(value?: string) {
 
 function buildImageCandidates(url?: string) {
   const base = String(url ?? '').trim();
+
   if (!base) return [];
 
   const fileId = extractDriveFileId(base);
+
   if (!fileId) {
     const baseWithoutProtocol = base.replace(/^https?:\/\//, '');
-    return [base, `https://images.weserv.nl/?url=${encodeURIComponent(baseWithoutProtocol)}`];
+
+    return [
+      base,
+      `https://images.weserv.nl/?url=${encodeURIComponent(baseWithoutProtocol)}`,
+    ];
   }
 
   return [
@@ -122,7 +136,9 @@ function buildImageCandidates(url?: string) {
     `https://drive.google.com/uc?export=view&id=${fileId}`,
     `https://drive.google.com/uc?export=download&id=${fileId}`,
     `https://drive.google.com/thumbnail?id=${fileId}&sz=w2000`,
-    `https://images.weserv.nl/?url=${encodeURIComponent(`drive.google.com/uc?export=download&id=${fileId}`)}`,
+    `https://images.weserv.nl/?url=${encodeURIComponent(
+      `drive.google.com/uc?export=download&id=${fileId}`
+    )}`,
     base,
   ];
 }
@@ -194,9 +210,7 @@ async function fetchContentById(contentId: string): Promise<PageData | null> {
       matchedRow.CONTENT_ID ||
       matchedRow['CONTENT ID'],
 
-    title:
-      matchedRow.TITLE ||
-      matchedRow.title,
+    title: matchedRow.TITLE || matchedRow.title,
 
     short_description:
       matchedRow['BLOG SHORT DESCRIPTION'] ||
@@ -208,18 +222,44 @@ async function fetchContentById(contentId: string): Promise<PageData | null> {
       matchedRow['BLOG LONG DE'] ||
       matchedRow.long_description,
 
-    blog_image:
-      getGoogleDriveImageUrl(
-    matchedRow.BLOG_IMAGE ||
-    matchedRow.blog_image
-  ), 
+    blog_image: getGoogleDriveImageUrl(
+      matchedRow.BLOG_IMAGE ||
+        matchedRow['BLOG IMAGE'] ||
+        matchedRow.blog_image
+    ),
 
-    insta_image:
-      getGoogleDriveImageUrl(
-    matchedRow.INSTRAGRAM_IMAGE ||
-    matchedRow.INSTA_IMAGE ||
-    matchedRow.insta_image
-  ),
+    insta_image: getGoogleDriveImageUrl(
+      matchedRow.INSTRAGRAM_IMAGE ||
+        matchedRow.INSTAGRAM_IMAGE ||
+        matchedRow.INSTA_IMAGE ||
+        matchedRow['INSTAGRAM IMAGE'] ||
+        matchedRow['INSTA IMAGE'] ||
+        matchedRow.insta_image
+    ),
+
+    instagram_description:
+      matchedRow['INSTAGRAM DESCRIPTION'] ||
+      matchedRow['INSTA DESCRIPTION'] ||
+      matchedRow.INSTAGRAM_DESCRIPTION ||
+      matchedRow.INSTA_DESCRIPTION ||
+      matchedRow.instagram_description ||
+      matchedRow.insta_description,
+
+    facebook_image: getGoogleDriveImageUrl(
+      matchedRow['FACEBOOK IMAGE'] ||
+        matchedRow.FACEBOOK_IMAGE ||
+        matchedRow.FB_IMAGE ||
+        matchedRow.facebook_image ||
+        matchedRow.fb_image
+    ),
+
+    facebook_description:
+      matchedRow['FACEBOOK DESCRIPTION'] ||
+      matchedRow['FB DESCRIPTION'] ||
+      matchedRow.FACEBOOK_DESCRIPTION ||
+      matchedRow.FB_DESCRIPTION ||
+      matchedRow.facebook_description ||
+      matchedRow.fb_description,
   };
 }
 
@@ -228,8 +268,17 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const imageUrl = useMemo(() => data?.blog_image ?? '', [data?.blog_image]);
-  const instaImageUrl = useMemo(() => data?.insta_image ?? '', [data?.insta_image]);
+  const blogImageUrl = useMemo(() => data?.blog_image ?? '', [data?.blog_image]);
+
+  const instaImageUrl = useMemo(
+    () => data?.insta_image ?? '',
+    [data?.insta_image]
+  );
+
+  const facebookImageUrl = useMemo(
+    () => data?.facebook_image ?? '',
+    [data?.facebook_image]
+  );
 
   const title = useMemo(
     () => data?.title?.trim() || 'Untitled',
@@ -244,6 +293,16 @@ function App() {
   const longDescription = useMemo(
     () => data?.long_description?.trim() || '',
     [data?.long_description]
+  );
+
+  const instagramDescription = useMemo(
+    () => data?.instagram_description?.trim() || '',
+    [data?.instagram_description]
+  );
+
+  const facebookDescription = useMemo(
+    () => data?.facebook_description?.trim() || '',
+    [data?.facebook_description]
   );
 
   useEffect(() => {
@@ -297,10 +356,11 @@ function App() {
   return (
     <main className="screen">
       <article className="content-card">
-        {imageUrl ? (
+        {/* Blog Section */}
+        {blogImageUrl ? (
           <>
             <p className="section-title">Blog Image</p>
-            <SmartImage src={imageUrl} alt={title} />
+            <SmartImage src={blogImageUrl} alt={title} />
           </>
         ) : null}
 
@@ -320,11 +380,51 @@ function App() {
           ) : null}
         </section>
 
-        {instaImageUrl ? (
+        {/* Instagram Section */}
+        {instaImageUrl || instagramDescription ? (
           <>
             <div className="divider" />
-            <p className="section-title">Instagram Image</p>
-            <SmartImage src={instaImageUrl} alt={title} />
+
+            {instaImageUrl ? (
+              <>
+                <p className="section-title">Instagram Image</p>
+                <SmartImage src={instaImageUrl} alt={title} />
+              </>
+            ) : null}
+
+            <section className="content-text">
+              <h2 className="content-title">{title}</h2>
+
+              {instagramDescription ? (
+                <p className="content-description">
+                  <b>Instagram Description:</b> {instagramDescription}
+                </p>
+              ) : null}
+            </section>
+          </>
+        ) : null}
+
+        {/* Facebook Section */}
+        {facebookImageUrl || facebookDescription ? (
+          <>
+            <div className="divider" />
+
+            {facebookImageUrl ? (
+              <>
+                <p className="section-title">Facebook Image</p>
+                <SmartImage src={facebookImageUrl} alt={title} />
+              </>
+            ) : null}
+
+            <section className="content-text">
+              <h2 className="content-title">{title}</h2>
+
+              {facebookDescription ? (
+                <p className="content-description">
+                  <b>Facebook Description:</b> {facebookDescription}
+                </p>
+              ) : null}
+            </section>
           </>
         ) : null}
       </article>
