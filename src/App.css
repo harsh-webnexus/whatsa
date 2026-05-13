@@ -92,6 +92,29 @@ h2.content-title {
   margin: 20px 5px 0;
 }
 
+/* PAGE URL BUTTON */
+
+.page-url-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.page-url-button {
+  background: #111111;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 12px 22px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.page-url-button:hover {
+  opacity: 0.9;
+}
+
 @media (max-width: 480px) {
   .screen {
     padding: 0;
@@ -138,5 +161,11 @@ h2.content-title {
 
   .divider {
     margin-top: 12px;
+  }
+
+  .page-url-button {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
   }
 }
