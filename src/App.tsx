@@ -275,7 +275,7 @@ function App() {
 
           {data.short_description && (
             <p className="content-description">
-              <b>Short Description:</b> {data.short_description}
+               {data.short_description}
             </p>
           )}
 
@@ -311,7 +311,7 @@ function App() {
                 <h2 className="content-title">{data.title}</h2>
 
                 <p className="content-description">
-                  <b>Instagram Description:</b>{' '}
+                 {' '}
                   {data.instagram_description}
                 </p>
               </section>
@@ -337,7 +337,7 @@ function App() {
                 <h2 className="content-title">{data.title}</h2>
 
                 <p className="content-description">
-                  <b>Facebook Description:</b>{' '}
+                  {' '}
                   {data.facebook_description}
                 </p>
               </section>
