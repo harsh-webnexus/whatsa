@@ -453,13 +453,13 @@ function FacebookPreview({ data }: { data: PageData }) {
         </aside>
 
         <main className="fbFullMain">
-          <div className="fbFullTopNav">
+          {/* <div className="fbFullTopNav">
             <span>⌂</span>
             <span>👥</span>
             <span>▣</span>
             <span>🏪</span>
             <span>◎</span>
-          </div>
+          </div> */}
 
           <div className="fbFullPageHeader">
             <div>
