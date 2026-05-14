@@ -237,53 +237,53 @@ function Header() {
   );
 }
 
-function SidebarItem({ title, img }: { title: string; img: string }) {
-  return (
-    <div className="featuredItem">
-      <a>
-        <div className="featuredThumb">
-          <img src={img} alt="" />
-        </div>
-        <h4>{title}</h4>
-      </a>
-    </div>
-  );
-}
+// function SidebarItem({ title, img }: { title: string; img: string }) {
+//   return (
+//     <div className="featuredItem">
+//       <a>
+//         <div className="featuredThumb">
+//           <img src={img} alt="" />
+//         </div>
+//         <h4>{title}</h4>
+//       </a>
+//     </div>
+//   );
+// }
 
-function Sidebar() {
-  return (
-    <aside className="rightSideBar">
-      <div className="sidebarSearch">
-        <input type="text" />
-        <button>Search</button>
-      </div>
+// function Sidebar() {
+//   return (
+//     <aside className="rightSideBar">
+//       <div className="sidebarSearch">
+//         <input type="text" />
+//         <button>Search</button>
+//       </div>
 
-      <div className="featuredArticle">
-        <h2>FEATURED ARTICLES</h2>
+//       <div className="featuredArticle">
+//         <h2>FEATURED ARTICLES</h2>
 
-        <SidebarItem
-          title="Shipping from Canada to Cyprus: Costs & Duties"
-          img="https://www.shipbymail.com/blog/wp-content/uploads/2023/08/cyprus-Marina-.jpg-e1772731813947.webp"
-        />
+//         <SidebarItem
+//           title="Shipping from Canada to Cyprus: Costs & Duties"
+//           img="https://www.shipbymail.com/blog/wp-content/uploads/2023/08/cyprus-Marina-.jpg-e1772731813947.webp"
+//         />
 
-        <SidebarItem
-          title="Ship to South Korea"
-          img="https://www.shipbymail.com/blog/wp-content/uploads/2022/12/business-gf-e1772732939267-1.jpg"
-        />
+//         <SidebarItem
+//           title="Ship to South Korea"
+//           img="https://www.shipbymail.com/blog/wp-content/uploads/2022/12/business-gf-e1772732939267-1.jpg"
+//         />
 
-        <SidebarItem
-          title="Shipping to Panama: Duties, Costs, and Transit Times"
-          img="https://www.shipbymail.com/blog/wp-content/uploads/2018/12/Panama.jpg"
-        />
+//         <SidebarItem
+//           title="Shipping to Panama: Duties, Costs, and Transit Times"
+//           img="https://www.shipbymail.com/blog/wp-content/uploads/2018/12/Panama.jpg"
+//         />
 
-        <SidebarItem
-          title="Ship To USA"
-          img="https://www.shipbymail.com/blog/wp-content/uploads/2018/11/new-york-city-1.jpg"
-        />
-      </div>
-    </aside>
-  );
-}
+//         <SidebarItem
+//           title="Ship To USA"
+//           img="https://www.shipbymail.com/blog/wp-content/uploads/2018/11/new-york-city-1.jpg"
+//         />
+//       </div>
+//     </aside>
+//   );
+// }
 
 function InstagramPreview({ data }: { data: PageData }) {
   if (!data.insta_image && !data.instagram_description) return null;
@@ -358,6 +358,7 @@ function InstagramPreview({ data }: { data: PageData }) {
 
             <p className="igCaption">
               <strong>shipbymail</strong>{' '}
+              <div>{ data.title}</div>
               {data.instagram_description || data.title}
             </p>
           </article>
@@ -639,7 +640,7 @@ function App() {
               <FacebookPreview data={data} />
             </div>
 
-            <Sidebar />
+            {/* <Sidebar /> */}
           </div>
         </div>
       </section>
