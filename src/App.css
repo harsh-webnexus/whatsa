@@ -250,14 +250,17 @@ body {
 }
 
 .postReadMore {
-  position: absolute;
-  right: 0;
-  bottom: 18px;
+  position: static;
+  margin-top: 18px;
+  display: flex;
+  justify-content: flex-end;
 }
+
+
 
 .postReadMore a {
   display: inline-block;
-  max-width: 90px;
+  max-width: none;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
