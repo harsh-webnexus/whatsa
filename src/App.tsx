@@ -331,7 +331,7 @@ function InstagramPreview({ data }: { data: PageData }) {
               </div>
 
               <div className="igAccountInfo">
-                <strong>shipbymail</strong>
+                <strong>ShipByMail</strong>
                 {/* <span>14 h</span> */}
               </div>
 
@@ -357,9 +357,15 @@ function InstagramPreview({ data }: { data: PageData }) {
             <div className="igLikes">75.1K likes</div>
 
             <p className="igCaption">
-              <strong>shipbymail</strong>{' '}
-              <div>{ data.title}</div>
-              {data.instagram_description || data.title}
+              <strong>ShipByMail</strong>{' '}
+              {data.title && (
+                  <p className="fbFullPostText">{data.title}</p>
+                )}
+                {data.instagram_description  && (
+                  <p className="fbFullPostText">{data.instagram_description }</p>
+                )}
+              {/* <div>{ data.title}</div>
+              {data.instagram_description || data.title} */}
             </p>
           </article>
         </main>
@@ -371,7 +377,7 @@ function InstagramPreview({ data }: { data: PageData }) {
             </div>
 
             <div>
-              <strong>shipbymail</strong>
+              <strong>ShipByMail</strong>
               <span>ShipByMail</span>
             </div>
 
@@ -434,7 +440,7 @@ function FacebookPreview({ data }: { data: PageData }) {
 
           <div className="fbFullPageRow">
             <img src={`${ASSET}/ship_logo.png`} alt="ShipByMail" />
-            <strong>Shipbymail</strong>
+            <strong>ShipByMail</strong>
             <span>⌄</span>
           </div>
 
@@ -464,7 +470,7 @@ function FacebookPreview({ data }: { data: PageData }) {
           <div className="fbFullPageHeader">
             <div>
               <img src={`${ASSET}/ship_logo.png`} alt="ShipByMail" />
-              <strong>Shipbymail</strong>
+              <strong>ShipByMail</strong>
             </div>
             <button>•••</button>
           </div>
@@ -477,12 +483,12 @@ function FacebookPreview({ data }: { data: PageData }) {
                 <p>📍 3130-580 Seaborne Avenue, Port Coquitlam, BC, Canada, V3B 0M3</p>
 
                 <h3>Links</h3>
-                <p>🔗 shipbymail.com</p>
+                <p>🔗 ShipByMail.com</p>
 
                 <h3>Contact info</h3>
                 <p>☎ +1 778-727-1427</p>
-                <p>✉ support@shipbymail.com</p>
-                <p>💬 Shipbymail</p>
+                <p>✉ support@ShipByMail.com</p>
+                <p>💬 ShipByMail</p>
               </div>
 
               <div className="fbFullCard">
@@ -522,7 +528,7 @@ function FacebookPreview({ data }: { data: PageData }) {
                   <img src={`${ASSET}/ship_logo.png`} alt="ShipByMail" />
 
                   <div>
-                    <strong>Shipbymail</strong>
+                    <strong>ShipByMail</strong>
                     <span>Just now · 🌐</span>
                   </div>
 
