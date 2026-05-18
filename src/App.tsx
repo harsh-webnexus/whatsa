@@ -592,7 +592,15 @@ function App() {
             <div className="leftCol">
               <article className="postInfoUpr">
                 {data.blog_image && (
-                  <div className="postfeatureImg">
+                <div
+  style={{
+    backgroundImage: `url(${data.blog_image})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+  }}
+  className="postfeatureImg"
+>
                     <SmartImage
                       src={data.blog_image}
                       alt={data.title || ''}
